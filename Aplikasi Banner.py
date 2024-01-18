@@ -1,107 +1,103 @@
-print("""
+def hapus_pesanan():
+    global daftar_pesanan
+    if not daftar_pesanan:
+        print("Tidak ada pesanan yang dapat dihapus.")
+        return
+
+    print("Daftar Pesanan:")
+    for i, pesanan in enumerate(daftar_pesanan, start=1):
+        print(f"{i}: Jenis Bahan: {pesanan['jenis_bahan']}, Panjang: {pesanan['panjang']} Meter, Lebar: {pesanan['lebar']} Meter, Total Harga: {pesanan['harga_total']}")
+
+    nomor_pesanan = int(input("Masukkan nomor pesanan yang ingin dihapus: "))
+    if 1 <= nomor_pesanan <= len(daftar_pesanan):
+        pesanan_terhapus = daftar_pesanan.pop(nomor_pesanan - 1)
+        print(f"Pesanan {nomor_pesanan} telah dihapus: Jenis Bahan: {pesanan_terhapus['jenis_bahan']}, Panjang: {pesanan_terhapus['panjang']} Meter, Lebar: {pesanan_terhapus['lebar']} Meter, Total Harga: {pesanan_terhapus['harga_total']}")
+    else:
+        print("Nomor pesanan tidak valid.")
+
+
+def tambah_complain():
+    global daftar_pesanan
+    if not daftar_pesanan:
+        print("Tidak ada pesanan untuk komplain.")
+        return
+
+    print("Daftar Pesanan:")
+    for i, pesanan in enumerate(daftar_pesanan, start=1):
+        print(f"{i}: Jenis Bahan: {pesanan['jenis_bahan']}, Panjang: {pesanan['panjang']} Meter, Lebar: {pesanan['lebar']} Meter, Total Harga: {pesanan['harga_total']}")
+
+    nomor_pesanan = int(input("Masukkan nomor pesanan yang ingin diajukan komplain: "))
+    if 1 <= nomor_pesanan <= len(daftar_pesanan):
+        komplain = input("Masukkan komplain anda: ")
+        print(f"Komplain untuk pesanan {nomor_pesanan}: {komplain}")
+    else:
+        print("Nomor pesanan tidak valid.")
+
+
+def main():
+    print("""
 #####################################     
 # Ujian Akhir Algoritma Pemrograman # 
 #####################################      
       """)
 
-print("""
+    print("""
 ============================
 -= Bams Digital Printing =-
 ============================      
-      \n""")
+          \n""")
 
-print("""Lagi nyari tempat cetak banner dengan harga terjangkau dan bisa ditunggu? Yaa cuma di Bams Digital Printing.
+    print("""Lagi nyari tempat cetak banner dengan harga terjangkau dan bisa ditunggu? Yaa cuma di Bams Digital Printing.
 Yuk, registrasi dulu yuk...
-      \n""")
-daftar = input("Nama costumer: ")
-daftar1 = daftar.upper()
-print("Selamat datang ", daftar1, ", segera buat pesanan baru agar dapat kami proses. Kami siap melayani :)\n")
+          \n""")
+    daftar = input("Nama costumer: ")
+    daftar1 = daftar.upper()
+    print("Selamat datang ", daftar1, ", segera buat pesanan baru agar dapat kami proses. Kami siap melayani :)\n")
 
-# Variabel utama
-status_pesanan = False
-daftar_pesanan = []
-total_keseluruhan = 0
-kode_invoice_izinkan = ['BY021', 'QA903', 'JK999']
-while True:
-    
-    print("""
--------------------------------------
-|   Kode    |   Jenis Layanan       |
--------------------------------------
-|   CB01    |   Cetak Banner Baru   |
-|   AC03    |   Ambil Hasil Cetakan |
-|   PN05    |   Daftar Pesanan      |
-|   LG02    |   Keluar              |
-------------------------------------- 
-    """)
+    # Variabel utama
+    global status_pesanan
+    status_pesanan = False
+    global daftar_pesanan
+    daftar_pesanan = []
+    global total_keseluruhan
+    total_keseluruhan = 0
+    kode_invoice_izinkan = ['BY021', 'QA903', 'JK999']
 
-    awal = input("\n Masukkan kode layanan: ").upper()
-
-    if awal == "CB01":
+    while True:
         print("""
-----------------------------------------------
-|   Kode    |   Jenis Bahan  |  Harga/Meter  |
-----------------------------------------------
-|   AB01    |   Albatros     |  Rp. 10.200   |
-|   LS02    |   Luster       |  Rp. 20.000   |
-|   FK05    |   Flexy Korea  |  Rp. 15.500   |
-----------------------------------------------
-              """)
+    -------------------------------------
+    |   Kode    |   Jenis Layanan       |
+    -------------------------------------
+    |   CB01    |   Cetak Banner Baru   |
+    |   AC03    |   Ambil Hasil Cetakan |
+    |   PN05    |   Daftar Pesanan      |
+    |   CF04    |   Cetak Faktur        |
+    |   HP06    |   Hapus Pesanan       |
+    |   CP07    |   Complain            |
+    |   LG02    |   Keluar              |
+    ------------------------------------- 
+        """)
 
-        # Jenis Bahan
-        JB = input("Masukkan kode jenis bahan: ").upper()
-        if JB == "AB01" or JB == "LS02" or JB == "FK05":
-            bahan = 10200 if JB == "AB01" else (20000 if JB == "LS02" else 15500)
+        awal = input("\n Masukkan kode layanan: ").upper()
+
+        if awal == "CB01":
+            cetak_banner()
+        elif awal == "AC03":
+            ambil_hasil_cetakan()
+        elif awal == "PN05":
+            daftar_pesanan()
+        elif awal == "CF04":
+            cetak_faktur()
+        elif awal == "HP06":
+            hapus_pesanan()
+        elif awal == "CP07":
+            tambah_complain()
+        elif awal == "LG02":
+            print("Program keluar")
+            break  # Keluar dari loop dan program
         else:
-            print("Mohon maaf, pilihan tidak valid")
-            continue  # Kembali ke menu awal
-        # proses menghitung
-        panjang_meter = int(input("Panjang Meter: "))
-        lebar_meter = int(input("Lebar Meter: "))
-        harga_total = (panjang_meter * lebar_meter) * bahan
-        print("Harga Total : Rp.", harga_total)
+            print("Kode tidak tersedia")
 
-        # Update status pesanan menjadi True
-        status_pesanan = True
 
-        # Tambahkan pesanan ke daftar_pesanan
-        pesanan = {
-            'jenis_bahan': JB,
-            'panjang': panjang_meter,
-            'lebar': lebar_meter,
-            'harga_total': harga_total
-        }
-        daftar_pesanan.append(pesanan)
-
-        # Update total keseluruhan
-        total_keseluruhan += harga_total
-
-    elif awal == "AC03":
-        # Masukkan kode invoice
-        kode_invoice = input("Masukkan kode invoice: ").upper()
-        if kode_invoice in kode_invoice_izinkan:
-            print(f"Cetak banner dengan nomor invoice {kode_invoice} sudah selesai diproses, Terimakasih")
-        else:
-            print("Kode invoice tidak terdeteksi, silahkan order cetakan baru.")
-            
-    elif awal == "PN05":
-        # Periksa status pesanan
-        if status_pesanan:
-            print("Daftar Pesanan:")
-            for i, pesanan in enumerate(daftar_pesanan, start=1):
-                print(f"{i}: Daftar pesanan anda: {pesanan['jenis_bahan']}, Total Harga: {pesanan['harga_total']}")
-            print(f"Total Keseluruhan: Rp. {total_keseluruhan}")
-            
-            # diskon 10% jika total keseluruhan lebih dari 300 ribu
-            if total_keseluruhan > 300000:
-                diskon = 0.1 * total_keseluruhan
-                total_keseluruhan -= diskon
-                print(f"Selamat!!! Diskon 10% diberikan! Total Keseluruhan setelah diskon: Rp. {total_keseluruhan}")
-        else:
-            print("Maaf, Anda belum membuat pesanan.")
-
-    elif awal == "LG02":
-        print("Program keluar")
-        break  # Keluar dari loop dan program
-    else:
-        print("Kode tidak tersedia")
+# Panggil fungsi utama
+main()
